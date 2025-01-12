@@ -1,5 +1,5 @@
 import random
-
+from checks import checks
 
 class randomAI():
     def __init__(self):
@@ -22,21 +22,8 @@ class randomAI():
         return [row,col]
     
     def isLegalMove(self,board,step):
-        intStep = []
-        for x in step:
-            intStep.append(int(x))
-        if len(intStep) > 2:
-            print('Invalid step!')
-            return False
-        if intStep[0]+1 > self.board_height  or intStep[1]+1 > self.board_width:
-            print('Invalid step!')
-            return False 
-        #print(intStep)
-        if board[intStep[0]][intStep[1]] is None:
-            return True
-        else:
-            print('Invalid step!')
-            return False
+        c = checks(board)
+        return c.isLegalMove(step)
     
     def find_winning_move_wrapper(self,board,ai_mark):
         return self.find_winning_move(board, ai_mark, 0, 1)
