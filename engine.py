@@ -1,6 +1,8 @@
 from randomAI import randomAI
 from checks import checks
+from minimaxAI import minimax
 import os
+import copy
 
 
 class board():
@@ -63,34 +65,44 @@ b.render_board()
 m = takeMove()
 c = checks(b.board)  # Pass the board to the checks class
 r = randomAI()
-def make_move_wrapper(player):
+def make_move_wrapper(player,mark):
     if player == 'human':
         while True:
             move = m.input_move()
             if c.isLegalMove(move):
-                b.make_move(move,'X')
+                b.make_move(move,mark)
                 break
+
     if player == 'random_win_block_ai':
         while True:
-            move = r.find_winning_move_wrapper(b.board,'O')
-            #print(move)
+            move = r.find_winning_move_wrapper(b.board,mark)
+            print(move)
             if c.isLegalMove(move):
-                b.make_move(move,'O')
+                b.make_move(move,mark)
                 break
+
     if player == 'random_ai':
         while True:
             move = r.send_random_move(b.board)
             #print(move)
             if c.isLegalMove(move):
-                b.make_move(move,'O')
+                b.make_move(move,mark)
+                break
+
+    if player == 'minimax':
+        while True:
+            move = minimax(copy.deepcopy(b.board),mark)
+            print(move)
+            if c.isLegalMove(move):
+                b.make_move(move,mark)
                 break
 
 while True:
     if not nextPlayer:
-        make_move_wrapper('human')
+        make_move_wrapper('random_win_block_ai','X')
         nextPlayer = True
     else:
-        make_move_wrapper('random_win_block_ai')
+        make_move_wrapper('minimax','O')
         nextPlayer = False
     b.render_board()
     if c.getWinner():
