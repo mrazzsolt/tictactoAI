@@ -4,6 +4,13 @@ class checks():
         self.board_height = 3
         self.board_width = 3
     
+    def getAllLegalMove(self,board):
+        indexes = []
+        for index, cell in enumerate([elem for row in board for elem in row]):
+            if cell is None:
+                indexes.append(index)
+        return indexes
+
     def isLegalMove(self, step):
         intStep = []
         for x in step:
