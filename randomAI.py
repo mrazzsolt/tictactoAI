@@ -26,16 +26,16 @@ class randomAI():
         for x in step:
             intStep.append(int(x))
         if len(intStep) > 2:
-            print('Helytelen lépés!')
+            print('Invalid step!')
             return False
         if intStep[0]+1 > self.board_height  or intStep[1]+1 > self.board_width:
-            print('Helytelen lépés!')
+            print('Invalid step!')
             return False 
         #print(intStep)
         if board[intStep[0]][intStep[1]] is None:
             return True
         else:
-            print('Helytelen lépés!')
+            print('Invalid step!')
             return False
     
     def find_winning_move_wrapper(self,board,ai_mark):
