@@ -9,10 +9,8 @@ class randomAI():
     def send_random_move(self,board):
         num_columns = len(board[0])
         random.seed()
-        indexes = []
-        for index, cell in enumerate([elem for row in board for elem in row]):
-            if cell is None:
-                indexes.append(index)
+        c = checks(board)
+        indexes = c.getAllLegalMove(board)
         #print(indexes)
         position = random.randint(indexes[0], indexes[-1])
         #print(position)
