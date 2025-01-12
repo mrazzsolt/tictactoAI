@@ -12,6 +12,7 @@ class checks():
         return indexes
 
     def isLegalMove(self, step):
+        print(self.board)
         intStep = []
         for x in step:
             intStep.append(int(x))
