@@ -1,4 +1,7 @@
 from randomAI import randomAI
+from checks import checks
+import os
+
 
 class board():
     def __init__(self,board):
@@ -11,6 +14,7 @@ class board():
         c.board = [[None, None, None], [None, None, None], [None, None, None]]
     
     def render_board(self):
+        os.system('cls')
         print('   0 1 2 ')
         print('  ------')
         rows = []
@@ -52,69 +56,12 @@ class takeMove():
                 move_coordinates.append(x)
         return move_coordinates
 
-class checks():  
-    def __init__(self):
-        self.board = b.board
-    
-    def isLegalMove(self,step):
-        intStep = []
-        for x in step:
-            intStep.append(int(x))
-        if len(intStep) > 2:
-            print('Invalid step!')
-            return False
-        if intStep[0]+1 > b.board_height  or intStep[1]+1 > b.board_width:
-            print('Invalid step!')
-            return False 
-        #print(intStep)
-        if self.board[intStep[0]][intStep[1]] is None:
-            return True
-        else:
-            print('Invalid step!')
-            return False
-    
-    def isBoardFull(self):
-        for x in self.board:
-            for y in x:
-                if y is None:
-                    return False
-        return True
-    
-    def checkRow(self, lst):
-        return lst[0] is not None and all(x == lst[0] for x in lst)
-
-    def checkColumn(self,board, col_index):
-        column_values = [row[col_index] for row in board]
-        return column_values[0] is not None and all(val == column_values[0] for val in column_values)
-    
-    def checkPrimaryDiagonal(self):
-        return self.board[0][0] is not None and all(self.board[i][i] == self.board[0][0] for i in range(len(self.board)))
-
-    def checkSecondaryDiagonal(self):
-        n = len(self.board)
-        return self.board[0][n-1] is not None and all(self.board[i][n-i-1] == self.board[0][n-1] for i in range(n))
-   
-    def getWinner(self):
-        c = checks()
-        for x in self.board:
-            if c.checkRow(x):
-                return True
-        
-        for x in range(3):
-            if c.checkColumn(self.board,x):
-                return True
-        if c.checkPrimaryDiagonal():
-            return True
-        if c.checkSecondaryDiagonal():
-            return True
-        return False
-        
-    
 
 nextPlayer = False
 b = board([[None, None, None], [None, None, None], [None, None, None]])
+b.render_board()
 m = takeMove()
-c = checks()
+c = checks(b.board)  # Pass the board to the checks class
 r = randomAI()
 def make_move_wrapper(player):
     if player == 'human':
