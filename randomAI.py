@@ -1,5 +1,5 @@
 import random
-from checks import checks
+import checks
 
 class randomAI():
     def __init__(self):
@@ -9,19 +9,15 @@ class randomAI():
     def send_random_move(self,board):
         num_columns = len(board[0])
         random.seed()
-        c = checks(board)
-        indexes = c.getAllLegalMove(board)
-        #print(indexes)
+        indexes = checks.getAllLegalMove(board)
         position = random.randint(indexes[0], indexes[-1])
-        #print(position)
         row = position // num_columns
         col = position % num_columns
         print(f"Index {position} corresponds to row {row}, column {col}")
         return [row,col]
     
     def isLegalMove(self,board,step):
-        c = checks(board)
-        return c.isLegalMove(step)
+        return checks.isLegalMove(board, step)
     
     def find_winning_move_wrapper(self,board,ai_mark):
         return self.find_winning_move(board, ai_mark, 0, 1)
@@ -58,23 +54,12 @@ class randomAI():
                 reverse_cross_values_none_index.append(self.board_width-x-1)
 
         if cross_values.count(ai_mark) == 2 and cross_values.count(None) == 1:
-            #print('Send this move2')
             if r.isLegalMove(board,[cross_values_none_index,cross_values_none_index]):
                 return [cross_values_none_index,cross_values_none_index]
         
         if reverse_cross_values.count(ai_mark) == 2 and reverse_cross_values.count(None) == 1:
-            #print('Send this move3')
             if r.isLegalMove(board,reverse_cross_values_none_index):
                 return reverse_cross_values_none_index
-        #check with opposite mark for blocking your step
         if depth == 1:
             return r.send_random_move(board)
         return r.find_winning_move(board,'X',depth+1,max_depth)
-            
-
-#board = [['O', 'X', None], 
-#         ['O', 'O', None], 
-#         ['O', None, 'O']]
-#r = randomAI()
-#r.send_random_move(board)
-#r.find_winning_move(board,'O')
