@@ -1,5 +1,5 @@
 from randomAI import randomAI
-from checks import checks
+import checks
 from minimaxAI import minimax
 import os
 import copy
@@ -13,7 +13,7 @@ class board():
 
     def clear_board(self):
         self.board = [[None, None, None], [None, None, None], [None, None, None]]
-        c.board = [[None, None, None], [None, None, None], [None, None, None]]
+        #c.board = [[None, None, None], [None, None, None], [None, None, None]]
     
     def render_board(self):
         os.system('cls')
@@ -63,13 +63,13 @@ nextPlayer = False
 b = board([[None, None, None], [None, None, None], [None, None, None]])
 b.render_board()
 m = takeMove()
-c = checks(b.board)  # Pass the board to the checks class
 r = randomAI()
+
 def make_move_wrapper(player,mark):
     if player == 'human':
         while True:
             move = m.input_move()
-            if c.isLegalMove(move):
+            if checks.isLegalMove(b.board, move):
                 b.make_move(move,mark)
                 break
 
@@ -77,7 +77,7 @@ def make_move_wrapper(player,mark):
         while True:
             move = r.find_winning_move_wrapper(b.board,mark)
             print(move)
-            if c.isLegalMove(move):
+            if checks.isLegalMove(b.board, move):
                 b.make_move(move,mark)
                 break
 
@@ -85,7 +85,7 @@ def make_move_wrapper(player,mark):
         while True:
             move = r.send_random_move(b.board)
             #print(move)
-            if c.isLegalMove(move):
+            if checks.isLegalMove(b.board, move):
                 b.make_move(move,mark)
                 break
 
@@ -93,27 +93,27 @@ def make_move_wrapper(player,mark):
         while True:
             move = minimax(copy.deepcopy(b.board),mark)
             print(move)
-            if c.isLegalMove(move):
+            if checks.isLegalMove(b.board, move):
                 b.make_move(move,mark)
                 break
 
 while True:
     if not nextPlayer:
-        make_move_wrapper('random_win_block_ai','X')
+        make_move_wrapper('human','X')
         nextPlayer = True
     else:
         make_move_wrapper('minimax','O')
         nextPlayer = False
     b.render_board()
-    if c.getWinner():
+    if checks.getWinner(b.board):
         if nextPlayer:
             print('X won')
             break
         else:
             print('O won')
             break
-    if c.isBoardFull():
+    if checks.isBoardFull(b.board):
         print('The board is full!')
-        if not c.getWinner():
+        if not checks.getWinner(b.board):
             print('Draw!')
             break
